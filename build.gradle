@@ -27,7 +27,6 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -52,13 +51,13 @@ task copyWebApp(type: Copy) {
 	into 'build/resources/main/static/.'
 }
 
-task appNpmInstall(type: NpmTask) {
+task appNpmInstall(type: YarnTask) {
 	description = "Installs all dependencies from package.json"
 	workingDir = file("${project.projectDir}/src/main/webapp")
 	args = ["install"]
 }
 
-task appNpmBuild(type: NpmTask) {
+task appNpmBuild(type: YarnTask) {
 	description = "Builds production version of the webapp"
 	workingDir = file("${project.projectDir}/src/main/webapp")
 	args = ["run", "build"]
@@ -70,6 +69,17 @@ compileJava.dependsOn copyWebApp
 
 node {
 	download = true
+
+	version = '10.14.1'
+
+	// Version of npm to use.
+	npmVersion = '6.4.1'
+
+	// Version of Yarn to use.
+	yarnVersion = '1.6.0'
+
+	// Set the work directory for Yarn
+	yarnWorkDir = file("${project.buildDir}/yarn")
 
 	// Set the work directory for unpacking node
 	workDir = file("${project.buildDir}/nodejs")

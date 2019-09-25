@@ -3,4 +3,5 @@ build/
 dist/
 yarn-error.log
 .DS_STORE
+npm-debug.log
 .vscode/
